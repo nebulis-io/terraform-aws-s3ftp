@@ -1,0 +1,6 @@
+tf-packer
+tf-packer.pub
+*.zip
+.terraform*
+terraform.tfstate*
+*.lock

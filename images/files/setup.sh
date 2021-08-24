@@ -56,3 +56,7 @@ sudo chmod +x /usr/bin/generate_login.sh
 # =========================
 
 sudo mkdir /home/ftp
+
+# =========================
+
+sudo mkdir -p /etc/ssl/private

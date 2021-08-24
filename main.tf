@@ -264,7 +264,7 @@ resource "aws_security_group" "this" {
 
 resource "aws_instance" "this" {
   ami                  = data.aws_ami.dunforce-s3ftp.id
-  instance_type        = "t3.micro"
+  instance_type        = var.instance_type
   iam_instance_profile = aws_iam_instance_profile.this.name
 
   key_name = aws_key_pair.this.key_name
@@ -289,6 +289,7 @@ resource "aws_instance" "this" {
       "sudo mount -a", # for "Transport endpoint not connected"
       "sudo generate_login.sh",
       "echo \"pasv_address=${aws_eip.this.public_ip}\" | sudo tee -a /etc/vsftpd/vsftpd.conf", # Setup PASSV Address
+      "sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj \"/C=${var.ssl_country}/ST=${var.ssl_state}/L=${var.ssl_location}/O=${var.ssl_organization}/OU=${var.ssl_organization_unit}/CN=${var.ssl_domain_name}\"",
       "sudo systemctl enable vsftpd",
       "sudo systemctl restart vsftpd"
     ]
